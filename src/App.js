@@ -4,6 +4,7 @@ import './App.scss';
 // Components
 import Overlay from './components/Overlay';
 import StartScreen from './components/StartScreen';
+import GameScreen from './components/GameScreen';
 
 // Providers
 import { OverlayContext } from './store/OverlayContext';
@@ -53,6 +54,7 @@ function App() {
 				{overlay.isOpen && overlay.content && !gameDifficulty && (
 					<Overlay content={overlay.content} onDismiss={toggleModal}></Overlay>
 				)}
+				{gameDifficulty && <GameScreen difficulty={gameDifficulty} />}
 			</OverlayContext.Provider>
 		</div>
 	);

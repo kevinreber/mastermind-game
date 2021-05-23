@@ -1,5 +1,5 @@
 import React, { useState, Fragment } from 'react';
-import './StartScreen.css';
+import './StartScreen.scss';
 
 /** Modal Component
  *
