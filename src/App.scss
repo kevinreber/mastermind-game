@@ -102,6 +102,299 @@ $break-xsm: 375px;
 }
 
 /* ============================================= */
+/*              App                              */
+/* ============================================= */
+.App {
+	text-align: center;
+}
+
+/* ============================================= */
+/*              Game Board                       */
+/* ============================================= */
+* {
+	outline: none;
+	box-sizing: border-box;
+}
+
+br {
+	margin-bottom: 1rem;
+}
+
+//GAME CONTAINER
+#game-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 100vh;
+}
+
+//GLOBAL SELECTORS
+.container {
+	margin: auto;
+	text-align: center;
+}
+
+.number {
+	display: flex;
+	justify-content: center;
+	@include box-shadow(10px);
+}
+
+//HEADER SECTION
+.header {
+	height: 120px;
+
+	/* ----------- iPhone 6+/7+/8+ ----------- */
+	/* Portrait */
+	@media only screen and (min-device-width: 414px) and (max-device-width: 736px) and (-webkit-min-device-pixel-ratio: 3) and (orientation: portrait) {
+		height: 90px;
+	}
+
+	& .game-title {
+		margin: 1rem auto 0 auto;
+		letter-spacing: 1px;
+		color: #444;
+
+		/* ----------- iPhone 6+/7+/8+ ----------- */
+		/* Portrait */
+		@media only screen and (min-device-width: 414px) and (max-device-width: 736px) and (-webkit-min-device-pixel-ratio: 3) and (orientation: portrait) {
+			margin-top: 0.75rem;
+		}
+	}
+
+	& .best-score {
+		margin: 0;
+		font-size: 12px;
+	}
+
+	& .attempts-container h3 {
+		margin: 8px;
+	}
+}
+
+//GAME BOARD SECTION
+#gameboard {
+	max-width: $break-xsm;
+	width: 95%;
+	margin: 0.7rem auto;
+
+	/* ----------- iPhone 6+/7+/8+ ----------- */
+	/* Portrait */
+	@media only screen and (min-device-width: 414px) and (max-device-width: 736px) and (-webkit-min-device-pixel-ratio: 3) and (orientation: portrait) {
+		margin: 0.7rem auto 0 auto;
+	}
+
+	& #random-numbers {
+		margin-bottom: 1rem;
+
+		& .card {
+			position: relative;
+			margin: auto;
+			transform-style: preserve-3d;
+			backface-visibility: hidden;
+			transition: all 0.2s linear;
+
+			&-face {
+				position: absolute;
+				left: -32px;
+				backface-visibility: hidden;
+				-webkit-transform: translate3d(0, 0, 0);
+				-webkit-backface-visibility: hidden;
+				color: $color-orange;
+			}
+
+			& .front {
+				transform: rotateY(180deg);
+				box-shadow: 0 0 12px 1px $color-orange;
+			}
+
+			& .back {
+				box-shadow: 0 0 12px 1px $color-orange,
+					inset 0px 0px 0px 10px $color-orange;
+			}
+		}
+	}
+
+	& #players-guesses {
+		margin-top: 7.5rem;
+
+		/* ----------- iPhone 6+/7+/8+ ----------- */
+		/* Portrait */
+		@media only screen and (min-device-width: 414px) and (max-device-width: 736px) and (-webkit-min-device-pixel-ratio: 3) and (orientation: portrait) {
+			margin-top: 7rem;
+		}
+	}
+
+	& #random-numbers,
+	& #players-guesses {
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+
+	& .random-number,
+	& .player-guess {
+		padding: 1.5rem;
+		margin: 0.5rem auto;
+		border-radius: 5px;
+		font-size: 36px;
+	}
+
+	& .random-number {
+		color: $color-overlay-bg;
+		background-color: $color-golden;
+	}
+
+	& .player-guess {
+		color: $color-overlay-bg;
+
+		&.shrink {
+			transform: scale(0.8);
+		}
+
+		&.grow {
+			transform: scale(1);
+		}
+	}
+
+	& .number {
+		transition: all 0.2s linear;
+		width: 64px;
+	}
+}
+
+//ANIMATIONS FOR CARDS & PLAYER GUESSES
+.active {
+	box-shadow: 0 0 15px 1px $color-orange;
+}
+
+.flip {
+	transform: rotateY(180deg);
+	box-shadow: 0 0 20px 3px $color-orange;
+}
+
+/* ============================================= */
+/*              Keyboard                         */
+/* ============================================= */
+
+#keyboard {
+	display: grid;
+	grid-template-rows: repeat(2, 1fr);
+	grid-template-columns: repeat(4, 1fr);
+	margin-bottom: 1rem;
+}
+
+.keyboard {
+	&-container {
+		margin: auto;
+	}
+
+	&-header {
+		margin: 0 auto 8px auto;
+		font-size: 16px;
+		letter-spacing: 1px;
+	}
+
+	&-number {
+		height: 50px;
+		width: 50px;
+		text-align: center;
+		padding: 1rem;
+		margin: 0.5rem;
+		border-radius: 3px;
+		border: none;
+		background-color: #fff;
+		transition: all 0.2s ease-in;
+		@include scale-element(hover, 1.1);
+		@include scale-element(active, 0.9);
+
+		&:hover {
+			@include hover;
+		}
+
+		&:active {
+			background-color: $color-golden;
+		}
+	}
+}
+
+/* ============================================= */
+/*              Tables                           */
+/* ============================================= */
+
+//HISTORY TABLE
+#history {
+	margin-top: 0;
+}
+
+.table {
+	display: flex;
+	flex-direction: column;
+
+	& td {
+		height: 16px;
+	}
+
+	&-titles-container {
+		margin-bottom: 8px;
+	}
+
+	&-title {
+		font-size: 14px;
+		height: 16px;
+		padding-left: 1rem;
+		padding-right: 1rem;
+	}
+}
+
+.attempt {
+	font-size: 12px;
+	letter-spacing: 1px;
+}
+
+/* ============================================= */
+/*              Timer                        */
+/* ============================================= */
+
+svg path {
+	stroke-width: 10;
+	transform: translate(20px, 5px);
+}
+
+#timer {
+	margin: 0 auto 1rem auto;
+}
+
+.timer-container {
+	height: 30px;
+}
+
+.progress {
+	display: block;
+	margin: auto;
+	width: 4.5rem;
+	height: 4.5rem;
+
+	&-bg {
+		fill: none;
+		stroke: lighten($color-overlay-bg, 40%);
+	}
+
+	&-bar {
+		fill: none;
+		stroke: $color-progress;
+		animation: progress 3s linear;
+		animation-name: progress;
+		animation-duration: 3s;
+		animation-fill-mode: both;
+		-webkit-animation-name: progress;
+		-webkit-animation-duration: 3s;
+		-webkit-animation-fill-mode: both;
+	}
+}
+
+/* ============================================= */
 /*              Buttons                          */
 /* ============================================= */
 

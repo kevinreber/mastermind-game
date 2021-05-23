@@ -9,25 +9,8 @@ import GameScreen from './components/GameScreen';
 // Providers
 import { OverlayContext } from './store/OverlayContext';
 
-const OVERLAY_INITIAL_VALUES = {
-	isOpen: true,
-	content: null,
-};
-
-const GAME_DIFFICULTIES = {
-	easy: {
-		keyboardMax: 5,
-		timer: 25,
-	},
-	medium: {
-		keyboardMax: 7,
-		timer: 20,
-	},
-	hard: {
-		keyboardMax: 9,
-		timer: 15,
-	},
-};
+// Constants
+import { OVERLAY_INITIAL_VALUES, GAME_DIFFICULTIES } from './config/constants';
 
 function App() {
 	const [gameDifficulty, setGameDifficulty] = useState(null);

@@ -1,18 +1,14 @@
 import React, { useState, Fragment } from 'react';
 import './StartScreen.scss';
 
-/** Modal Component
+// Constants
+import { DIFFICULTY_LEVELS, INSTRUCTIONS_LIST } from '../../config/constants';
+
+/** Overlay Component
  *
  * @param {any}         content		Content that displays inside Modal.
  * @param {function}    onDismiss  	Function that closes Modal component.
  */
-
-const DIFFICULTY_LEVELS = ['EASY', 'MEDIUM', 'HARD'];
-const INSTRUCTIONS_LIST = [
-	'Player has 10 attempts to guess the location of 4 numbers in limited time',
-	'After each attempt player has 10 seconds to view their results',
-	'Game ends when player runs out of attempts or matches all numbers',
-];
 
 const StartScreen = ({ selectDifficulty }) => {
 	const [showInstructions, setShowInstructions] = useState(false);
