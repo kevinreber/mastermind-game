@@ -32,3 +32,16 @@ const randomNumbersFallback = (number) => {
 const generateRandomNumber = (number) => {
 	return Math.floor(Math.random() * (number + 1));
 };
+
+/** Compares answers to users guesses.
+ *
+ * @param {array} answers Array of numbers as strings.
+ * @param {array} guesses Array of numbers
+ * @returns {boolean}
+ */
+export const checkAnswers = (answers, guesses) => {
+	for (let i = 0; i < answers.length; i++) {
+		if (Number(answers[i]) !== Number(guesses[i])) return false;
+	}
+	return true;
+};

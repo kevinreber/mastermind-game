@@ -4,7 +4,7 @@ const PlayerHistoryTable = () => {
 	const attempts = [];
 	for (let i = 0; i < 9; i++) {
 		attempts.push(
-			<tr className="table-attempt">
+			<tr className="table-attempt" key={i}>
 				<td className="attempt">----</td>
 				<td className="attempt">--</td>
 				<td className="attempt">--</td>

@@ -2,13 +2,23 @@ import React from 'react';
 
 /** Keyboard Component
  *
- * @param {number}  keyboardLength
+ * @param {number}      keyboardLength
+ * @param {function}    handleClick
+ * @param {boolean}     lockGameBoard
  */
 
-const Keyboard = ({ keyboardLength }) => {
+const Keyboard = ({ keyboardLength, lockGameBoard, handleClick }) => {
 	const numbers = [];
 	for (let i = 0; i <= keyboardLength; i++) {
-		numbers.push(<button className="keyboard-number number">{i}</button>);
+		numbers.push(
+			<button
+				key={i}
+				disabled={lockGameBoard}
+				onClick={() => handleClick(i)}
+				className="keyboard-number number">
+				{i}
+			</button>
+		);
 	}
 
 	let styles;

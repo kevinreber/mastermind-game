@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 // Utils
-import { fetchRandomNumbers } from '../lib/utils';
+import { fetchRandomNumbers, checkAnswers } from '../lib/utils';
 
 // Components
 import AnswerCards from '../AnswerCards';
@@ -22,6 +22,7 @@ const PLAYER_GUESS_DEFAULT = ['-', '-', '-', '-'];
 const GameScreen = ({ difficulty, playerBestScore }) => {
 	const [answers, setAnswers] = useState([]);
 	const [playerGuesses, setPlayerGuesses] = useState(PLAYER_GUESS_DEFAULT);
+	const [playerGuessIndex, setPlayerGuessIndex] = useState(0);
 	const [isLoading, setIsLoading] = useState(true);
 	const [lockGameBoard, setLockGameBoard] = useState(true);
 	const [gameOver, setGameOver] = useState(true);
@@ -46,6 +47,32 @@ const GameScreen = ({ difficulty, playerBestScore }) => {
 		}
 	}, []);
 
+	useEffect(() => {
+		if (playerGuessIndex === 4) {
+			setLockGameBoard(true);
+			handleGuesses();
+		}
+	}, [playerGuessIndex]);
+
+	const handleClick = (number) => {
+		const tempGuesses = playerGuesses;
+		tempGuesses[playerGuessIndex] = number;
+		setPlayerGuesses(tempGuesses);
+		setPlayerGuessIndex(playerGuessIndex + 1);
+	};
+
+	const handleGuesses = () => {
+		console.log('user used all guesses!');
+		console.log(playerGuesses);
+		if (checkAnswers(answers, playerGuesses)) {
+			// TODO: Render win screen
+			console.log('success!');
+		} else {
+			// TODO: Render attempts left screen
+			console.log('try again!');
+		}
+	};
+	console.log({ answers });
 	if (isLoading) {
 		return <Loader />;
 	}
@@ -74,7 +101,12 @@ const GameScreen = ({ difficulty, playerBestScore }) => {
 					answers.length ? 'animated fadeInUp' : 'hide'
 				}`}>
 				{answers.length && <AnswerCards answers={answers} />}
-				{answers.length && <PlayerCards playerGuesses={playerGuesses} />}
+				{answers.length && (
+					<PlayerCards
+						playerGuesses={playerGuesses}
+						currentGuess={playerGuessIndex}
+					/>
+				)}
 			</section>
 			{/* <!-- /Gameboard --> */}
 
@@ -105,8 +137,9 @@ const GameScreen = ({ difficulty, playerBestScore }) => {
 				}`}>
 				<h3 className="keyboard-header">GUESS THE CODE ABOVE</h3>
 				<Keyboard
-					disabled={lockGameBoard}
+					lockGameBoard={lockGameBoard}
 					keyboardLength={difficulty.keyboardMax}
+					handleClick={handleClick}
 				/>
 			</section>
 			{/* <!-- Keyboard --> */}
