@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
 // Utils
-import { fetchRandomNumbers, checkAnswers } from '../lib/utils';
+import {
+	fetchRandomNumbers,
+	checkAnswers,
+	handleAttemptData,
+} from '../lib/utils';
 
 // Components
 import AnswerCards from '../AnswerCards';
@@ -11,7 +15,7 @@ import Timer from '../Timer';
 import Keyboard from '../Keyboard/Keyboard';
 import Loader from '../Loader/Loader';
 
-/**
+/** Game Screen renders when user begins game.
  *
  * @param {object}  difficulty
  * @param {number}  playerBestScore
@@ -23,6 +27,7 @@ const GameScreen = ({ difficulty, playerBestScore }) => {
 	const [answers, setAnswers] = useState([]);
 	const [playerGuesses, setPlayerGuesses] = useState(PLAYER_GUESS_DEFAULT);
 	const [playerGuessIndex, setPlayerGuessIndex] = useState(0);
+	const [playerAttempts, setPlayerAttempts] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [lockGameBoard, setLockGameBoard] = useState(true);
 	const [gameOver, setGameOver] = useState(true);
@@ -67,11 +72,24 @@ const GameScreen = ({ difficulty, playerBestScore }) => {
 		if (checkAnswers(answers, playerGuesses)) {
 			// TODO: Render win screen
 			console.log('success!');
+			setGameOver(true);
 		} else {
 			// TODO: Render attempts left screen
+			// TODO: Update player history
 			console.log('try again!');
+			updateUserAttempts(playerGuesses);
 		}
 	};
+
+	const updateUserAttempts = (currentAttemptValues) => {
+		// TODO: Check if numbers exist
+		// TODO: Check if location is correct
+		const attemptData = handleAttemptData(answers, currentAttemptValues);
+
+		console.log({ attemptData });
+		setPlayerAttempts((attempts) => [...attempts, attemptData]);
+	};
+
 	console.log({ answers });
 	if (isLoading) {
 		return <Loader />;
@@ -116,7 +134,7 @@ const GameScreen = ({ difficulty, playerBestScore }) => {
 				className={`container ${
 					answers.length ? 'animated fadeInUp' : 'hide'
 				}`}>
-				{answers.length && <PlayerHistoryTable />}
+				{answers.length && <PlayerHistoryTable attempts={playerAttempts} />}
 			</section>
 			{/* <!-- /Player History --> */}
 

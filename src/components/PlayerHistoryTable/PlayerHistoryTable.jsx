@@ -1,17 +1,9 @@
 import React from 'react';
 
-const PlayerHistoryTable = () => {
-	const attempts = [];
-	for (let i = 0; i < 9; i++) {
-		attempts.push(
-			<tr className="table-attempt" key={i}>
-				<td className="attempt">----</td>
-				<td className="attempt">--</td>
-				<td className="attempt">--</td>
-			</tr>
-		);
-	}
+// Components
+import PlayerHistoryTableAttempts from '../PlayerHistoryTableAttempts';
 
+const PlayerHistoryTable = ({ attempts, currentAttempt }) => {
 	return (
 		<div className="table container">
 			<table id="history-tables">
@@ -22,7 +14,10 @@ const PlayerHistoryTable = () => {
 						<td className="table-title">Location</td>
 					</tr>
 				</thead>
-				<tbody>{attempts}</tbody>
+				<PlayerHistoryTableAttempts
+					attempts={attempts}
+					currentAttempt={currentAttempt}
+				/>
 			</table>
 		</div>
 	);

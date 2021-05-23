@@ -45,3 +45,21 @@ export const checkAnswers = (answers, guesses) => {
 	}
 	return true;
 };
+
+export const handleAttemptData = (answers, values) => {
+	let exist = 0;
+	let location = 0;
+
+	for (let i = 0; i < values.length; i++) {
+		if (Number(answers[i]) === Number(values[i])) {
+			console.log('located:', values[i]);
+			exist++;
+			location++;
+		} else if (values.includes(Number(answers[i]))) {
+			console.log('includes:', values[i]);
+			exist++;
+		}
+	}
+
+	return { values, exist, location };
+};
