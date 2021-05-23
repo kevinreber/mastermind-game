@@ -1,0 +1,163 @@
+/* ============================================= */
+/*                  Colors                       */
+/* ============================================= */
+
+//GLOBAL COLORS
+$color-overlay-bg: #777;
+$color-golden: rgb(255, 206, 82);
+$color-orange: orange;
+$color-progress: #e4757a;
+$color-win: rgba(159, 230, 159, 0.8);
+$color-wrong: rgba(228, 117, 122, 0.8);
+
+/* ============================================= */
+/*                     Font                      */
+/* ============================================= */
+
+//PRIMARY FONT FAMILY
+$font-primary: 'Lato', sans-serif;
+
+/* ============================================= */
+/*               Media Queries                   */
+/* ============================================= */
+
+$break-xsm: 375px;
+
+/* ============================================= */
+/*              Animations & Keyframes           */
+/* ============================================= */
+
+.hide {
+	opacity: 0;
+}
+
+.animated {
+	animation-duration: 0.8s;
+	animation-fill-mode: both;
+	-webkit-animation-duration: 0.8s;
+	-webkit-animation-fill-mode: both;
+}
+
+.fadeInUp {
+	opacity: 0;
+	animation-name: fadeInUp;
+	-webkit-animation-name: fadeInUp;
+}
+
+//ANIMATION FOR ELEMENTS TO FADE IN
+@keyframes fadeInUp {
+	from {
+		transform: translate3d(0, 40px, 0);
+	}
+
+	to {
+		transform: translate3d(0, 0, 0);
+		opacity: 1;
+	}
+}
+
+@-webkit-keyframes fadeInUp {
+	from {
+		transform: translate3d(0, 40px, 0);
+	}
+
+	to {
+		transform: translate3d(0, 0, 0);
+		opacity: 1;
+	}
+}
+
+//ANIMATION FOR TIMER
+@keyframes progress {
+	0% {
+		stroke-dasharray: 0 100;
+	}
+}
+
+@-webkit-keyframes progress {
+	0% {
+		stroke-dasharray: 0 100;
+	}
+}
+
+/* ============================================= */
+/*              Mixins                           */
+/* ============================================= */
+
+@mixin box-shadow($px) {
+	box-shadow: 0 0 $px $color-overlay-bg;
+}
+
+@mixin hover {
+	color: #444;
+	box-shadow: 0 0 10px 1px $color-golden;
+	cursor: pointer;
+	transition: all 0.2s linear;
+}
+
+@mixin scale-element($el, $scale) {
+	&:#{$el} {
+		transform: scale($scale);
+	}
+}
+
+/* ============================================= */
+/*              Buttons                          */
+/* ============================================= */
+
+//DEFAULT BUTTON STYLE
+.btn {
+	display: block;
+	margin: 1rem auto 0 auto;
+	width: 95%;
+	max-width: $break-xsm;
+	border: none;
+	padding: 10px 0;
+	text-transform: uppercase;
+	border-radius: 5px;
+	box-shadow: 0 0 8px $color-overlay-bg;
+
+	@include scale-element(hover, 1.1);
+	@include scale-element(active, 0.9);
+
+	&:hover {
+		@include hover;
+		background-color: $color-golden;
+		border: 1px solid #fff;
+	}
+
+	&.reset,
+	&.continue {
+		background-color: rgb(77, 77, 77);
+		color: #fff;
+		border: 1px solid #fff;
+
+		&:hover {
+			background-color: $color-golden;
+		}
+	}
+}
+
+//GAME OVER BUTTON
+#btn-game-over {
+	background-color: $color-golden;
+	border: 1px solid orange;
+}
+
+/* ============================================= */
+/*              Typography                       */
+/* ============================================= */
+
+* {
+	font-family: $font-primary;
+	box-sizing: border-box;
+	color: $color-overlay-bg;
+}
+
+p {
+	line-height: 1.45em;
+}
+
+a {
+	text-decoration: none;
+}

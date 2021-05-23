@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom';
-import './Overlay.css';
+import './Overlay.scss';
 
 /** Modal Component
  *
