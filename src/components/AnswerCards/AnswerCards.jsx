@@ -6,7 +6,7 @@ import React from 'react';
  */
 const AnswerCards = ({ answers }) => {
 	return (
-		<div className="random-numbers">
+		<div id="random-numbers" className="container">
 			{answers.map((number, idx) => (
 				<div key={idx} className="card container">
 					<p className="random-number card-face front number">{number}</p>

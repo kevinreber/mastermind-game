@@ -5,20 +5,27 @@ import { fetchRandomNumbers } from '../lib/utils';
 
 // Components
 import AnswerCards from '../AnswerCards';
+import PlayerCards from '../PlayerCards';
+import PlayerHistoryTable from '../PlayerHistoryTable';
 import Timer from '../Timer';
+import Keyboard from '../Keyboard/Keyboard';
+import Loader from '../Loader/Loader';
 
 /**
  *
  * @param {object}  difficulty
+ * @param {number}  playerBestScore
  */
 
-const GameScreen = ({ difficulty }) => {
+const PLAYER_GUESS_DEFAULT = ['-', '-', '-', '-'];
+
+const GameScreen = ({ difficulty, playerBestScore }) => {
 	const [answers, setAnswers] = useState([]);
+	const [playerGuesses, setPlayerGuesses] = useState(PLAYER_GUESS_DEFAULT);
 	const [isLoading, setIsLoading] = useState(true);
-	const [lockBoard, setLockBoard] = useState(true);
+	const [lockGameBoard, setLockGameBoard] = useState(true);
 	const [gameOver, setGameOver] = useState(true);
 
-	console.log(difficulty, answers);
 	// async function startGame() {
 
 	// TODO
@@ -30,7 +37,7 @@ const GameScreen = ({ difficulty }) => {
 		const getData = async () => {
 			const randomNumbers = await fetchRandomNumbers(difficulty.keyboardMax);
 			setAnswers(randomNumbers);
-			setLockBoard(false);
+			setLockGameBoard(false);
 			setGameOver(false);
 			setIsLoading(false);
 		};
@@ -40,7 +47,7 @@ const GameScreen = ({ difficulty }) => {
 	}, []);
 
 	if (isLoading) {
-		return <p>Loading...</p>;
+		return <Loader />;
 	}
 
 	return (
@@ -50,7 +57,7 @@ const GameScreen = ({ difficulty }) => {
 				className={`header ${answers.length ? 'animated fadeInUp' : 'hide'}`}>
 				<h1 className="game-title">MASTERMIND</h1>
 				<p className="best-score">
-					BEST SCORE: <span id="best-score"></span>
+					BEST SCORE: <span id="best-score">{playerBestScore}</span>
 				</p>
 				<div className="attempts-container container">
 					<h3>
@@ -67,7 +74,7 @@ const GameScreen = ({ difficulty }) => {
 					answers.length ? 'animated fadeInUp' : 'hide'
 				}`}>
 				{answers.length && <AnswerCards answers={answers} />}
-				<div id="players-guesses" className="container"></div>
+				{answers.length && <PlayerCards playerGuesses={playerGuesses} />}
 			</section>
 			{/* <!-- /Gameboard --> */}
 
@@ -77,9 +84,7 @@ const GameScreen = ({ difficulty }) => {
 				className={`container ${
 					answers.length ? 'animated fadeInUp' : 'hide'
 				}`}>
-				<div className="table container">
-					<table id="history-tables"></table>
-				</div>
+				{answers.length && <PlayerHistoryTable />}
 			</section>
 			{/* <!-- /Player History --> */}
 
@@ -99,7 +104,10 @@ const GameScreen = ({ difficulty }) => {
 					answers.length ? 'animated fadeInUp' : 'hide'
 				}`}>
 				<h3 className="keyboard-header">GUESS THE CODE ABOVE</h3>
-				<div id="keyboard" className="keys container"></div>
+				<Keyboard
+					disabled={lockGameBoard}
+					keyboardLength={difficulty.keyboardMax}
+				/>
 			</section>
 			{/* <!-- Keyboard --> */}
 		</div>

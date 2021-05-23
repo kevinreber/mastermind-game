@@ -17,7 +17,9 @@ function App() {
 	const [overlay, setOverlay] = useState(OVERLAY_INITIAL_VALUES);
 	const overlayValues =
 		(() => ({ overlay, setOverlay }), [overlay, setOverlay]);
-
+	const playerBestScore = localStorage.getItem('bestScore')
+		? JSON.parse(localStorage.bestScore)
+		: '-';
 	const toggleModal = () => setOverlay((st) => ({ ...st, isOpen: !st.isOpen }));
 
 	const handleSelectedDifficulty = (difficulty) => {
@@ -37,7 +39,12 @@ function App() {
 				{overlay.isOpen && overlay.content && !gameDifficulty && (
 					<Overlay content={overlay.content} onDismiss={toggleModal}></Overlay>
 				)}
-				{gameDifficulty && <GameScreen difficulty={gameDifficulty} />}
+				{gameDifficulty && (
+					<GameScreen
+						difficulty={gameDifficulty}
+						playerBestScore={playerBestScore}
+					/>
+				)}
 			</OverlayContext.Provider>
 		</div>
 	);
