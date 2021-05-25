@@ -23,6 +23,7 @@ function App() {
 				<GameScreen
 					difficulty={gameDifficulty}
 					playerBestScore={playerBestScore}
+					goToStartScreen={() => setGameDifficulty(null)}
 				/>
 			) : (
 				<StartScreen

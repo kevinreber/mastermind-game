@@ -19,13 +19,14 @@ import ResultsScreen from '../ResultsScreen';
 
 /** Game Screen renders when user begins game.
  *
- * @param {object}  difficulty
- * @param {number}  playerBestScore
+ * @param {object}  	difficulty
+ * @param {number}  	playerBestScore
+ * @param {function}	goToStartScreen
  */
 
 const PLAYER_GUESS_DEFAULT = ['-', '-', '-', '-'];
 
-const GameScreen = ({ difficulty, playerBestScore }) => {
+const GameScreen = ({ difficulty, playerBestScore, goToStartScreen }) => {
 	const [answers, setAnswers] = useState([]);
 	const [playerGuesses, setPlayerGuesses] = useState(PLAYER_GUESS_DEFAULT);
 	const [playerGuessIndex, setPlayerGuessIndex] = useState(0);
@@ -123,6 +124,7 @@ const GameScreen = ({ difficulty, playerBestScore }) => {
 		setIsLoading(true);
 		setPlayerResult(null);
 		clearTimer();
+		goToStartScreen();
 	};
 
 	const startNewAttempt = () => {
