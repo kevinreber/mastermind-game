@@ -1,70 +1,120 @@
-# Getting Started with Create React App
+<div align='center'>
+<h1>Mastermind</h1>
+Mastermind is a game where players have 10 attempts to guess the location of 4 numbers
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+&nbsp;
+<img src="public/images/demo.jpg" alt="demo" width="250"/>
 
-## Available Scripts
+[Play Game](https://kevinreber.github.io/mastermind-game/)
 
-In the project directory, you can run:
+[Source Code](https://github.com/kevinreber/mastermind-game)
 
-### `yarn start`
+</div>
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Installation Requirements
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Node
 
-### `yarn test`
+To run npm/yarn, you will need Node.js. You can go on [official Node.js website](https://nodejs.org/en/download) and download the installer.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+If the installation was successful, you should be able to run the following command.
 
-### `yarn build`
+```bash
+$ node -v                       # check if node is installed
+  v10.16.0                      # version number
+$ npm -v                        # check if npm is installed
+  6.14.12                       # version number
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Setup
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+After downloading node/npm, you should be able to run the following:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Clone Repository
 
-### `yarn eject`
+```
+$ cd [workspace directory]
+$ git clone https://github.com/kevinreber/mastermind-game.git
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Run Program
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```
+$ cd mastermind-game
+$ npm install
+$ npm start
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Open [http://localhost:3000](http://localhost:3000) to view project in the browser.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## How to Play
 
-## Learn More
+<div align='center'>
+<img src="public/images/mastermind.gif" alt="demo" width="250"/>
+</div>
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- Player selects a difficulty.
+- Player has 10 attempts to guess the location of 4 numbers in limited time.
+- After each attempt player has 10 seconds to view their results.
+- Game ends when player runs out of attempts or matches all numbers.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## <a id="difficulty"></a>Difficulty levels
 
-### Code Splitting
+- <strong>Easy</strong> - Timer: 30 seconds, Keyboard Numbers: 0-5
+- <strong>Medium</strong> - Timer: 25 seconds, Keyboard Numbers: 0-7
+- <strong>Hard</strong> - Timer: 20 seconds, Keyboard Numbers: 0-9
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Goals
 
-### Analyzing the Bundle Size
+- Display how many attempts player has.
+- Generate 4 random integers using [Random.Org API](https://www.random.org/clients/http/api/).
+- Numbers must be between 0-7.
+- Player need a way to guess 4 random numbers - make keyboard for mobile users.
+- Results need to be shown after Player has made 4 guesses.
+- Player needs a way to continue game after results displayed.
+- Number of attempts needs to be updated each turn.
+- Player must have a way to view previous results.
+- Notify player when game is over.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Wireframes
 
-### Making a Progressive Web App
+<div align='center'>
+    <img src="public/images/design-sketch.jpg" alt="design" width="800"/>
+</div>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- Minimalist approach
+- Desktop & Mobile friendly
+- Reveal answers when game is over
 
-### Advanced Configuration
+## Game Rules
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- Player is only allowed 4 guesses per attempt.
+- Game is not over until player has matched all 4 random numbers or player has 0 attempts left.
+- Player who has matched all 4 random numbers in the least amount of attempts has their number of attempts stored in "Best Score"
 
-### Deployment
+## Extensions Implemented
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+- Difficulty Levels
+- Instructions
+- Timer
+- Animations
+- Media Queries
 
-### `yarn build` fails to minify
+## Extensions To Add/Improve
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Local Storage
+- Show player history on Results Screen
+- Improve animations
+- Sound
+- Different design for desktop
+
+## Built With
+
+- [Sass](https://sass-lang.com/install) - CSS preprocessor
+- [Axios](https://github.com/axios/axios) - Promise based HTTP client for the browser and node.js
+- [React.js](https://reactjs.org/) - Javascript Framework
+- [Random.Org](https://www.random.org/clients/http/api/) - Random number generator API
+
+## Authors
+
+- Kevin Reber &nbsp; [Github](https://github.com/kevinreber) &nbsp; | &nbsp; [Portfolio](https://kevinreber.github.io/kevin-reber-portfolio/)
