@@ -18,7 +18,6 @@ const formatValues = (values) => {
 };
 
 const PlayerHistoryTableAttempts = ({ attempts, currentAttempt }) => {
-	console.log({ attempts });
 	const renderAttempts = [];
 	for (let i = 0; i < 9; i++) {
 		let { values, exist, location } = attempts[i]?.values

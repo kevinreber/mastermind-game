@@ -15,6 +15,7 @@ import Timer from '../Timer';
 import Keyboard from '../Keyboard/Keyboard';
 import Loader from '../Loader/Loader';
 import GameOverScreen from '../GameOverScreen/GameOverScreen';
+import ResultsScreen from '../ResultsScreen';
 
 /** Game Screen renders when user begins game.
  *
@@ -33,10 +34,23 @@ const GameScreen = ({ difficulty, playerBestScore }) => {
 	const [lockGameBoard, setLockGameBoard] = useState(true);
 	const [playerResult, setPlayerResult] = useState(null);
 	const [gameOver, setGameOver] = useState(false);
+	const [timerOn, setTimerOn] = useState(true);
+	const [showAttemptResults, setShowAttemptResults] = useState(false);
+
+	let timeout;
+	const clearTimer = () => {
+		console.log('clearing out timer', timeout);
+		clearTimeout(timeout);
+		// let id = window.setTimeout(() => {}, 0);
+		// while (id--) {
+		// 	window.clearTimeout(id);
+		// 	console.log('cleared timer', count);
+		// 	setCount(count + 1);
+		// }
+	};
 
 	// TODO
 	// checkIfBestScoreExists();
-	// startTimerBar(selectedDifficulty.timer);
 	// }
 
 	useEffect(() => {
@@ -48,15 +62,57 @@ const GameScreen = ({ difficulty, playerBestScore }) => {
 		};
 		if (isLoading) {
 			getData();
+			setTimerOn(true);
 		}
 	}, [isLoading]);
 
 	useEffect(() => {
+		// Once player has made all guesses
 		if (playerGuessIndex === 4) {
+			if (timerOn) {
+				clearTimer();
+				setTimerOn(false);
+			}
+
 			setLockGameBoard(true);
 			handleGuesses();
 		}
 	}, [playerGuessIndex]);
+
+	useEffect(() => {
+		// When timer is done and player hasn't finished their guesses
+		if (!timerOn && playerGuessIndex !== 4) {
+			setLockGameBoard(true);
+			handleGuesses();
+		}
+	}, [timerOn]);
+
+	useEffect(() => {
+		// When timer is on
+		if (timerOn) {
+			timeout = setTimeout(() => {
+				if (!gameOver) {
+					setTimerOn(false);
+				}
+			}, difficulty.timer * 1000);
+		}
+	}, [timerOn]);
+
+	useEffect(() => {
+		// When game is over
+		if (gameOver) {
+			clearTimer();
+			if (playerAttempts.length >= 10) {
+				setTimeout(() => {
+					setPlayerResult('lose');
+				}, 3000);
+			} else {
+				setTimeout(() => {
+					setPlayerResult('win');
+				}, 3000);
+			}
+		}
+	}, [gameOver, playerAttempts]);
 
 	const handleNewGame = () => {
 		const RESET_GUESSES = ['-', '-', '-', '-'];
@@ -66,24 +122,20 @@ const GameScreen = ({ difficulty, playerBestScore }) => {
 		setGameOver(false);
 		setIsLoading(true);
 		setPlayerResult(null);
+		clearTimer();
 	};
 
-	useEffect(() => {
-		if (gameOver) {
-			console.log('Game Over!');
-			if (playerAttempts.length === 10) {
-				console.log('you lose!');
-                setTimeout(()=> {
-				setPlayerResult('lose');
-                }, 3000)
-			} else {
-				console.log('you win!');
-                setTimeout(()=> {
-				setPlayerResult('win');
-                }, 3000)
-			}
-		}
-	}, [gameOver, playerAttempts]);
+	const startNewAttempt = () => {
+		const RESET_GUESSES = ['-', '-', '-', '-'];
+
+		setPlayerGuesses(RESET_GUESSES);
+		setPlayerGuessIndex(0);
+		setLockGameBoard(false);
+
+		clearTimer();
+		setTimerOn(true);
+		setShowAttemptResults(false);
+	};
 
 	const handleClick = (number) => {
 		const tempGuesses = playerGuesses;
@@ -96,23 +148,20 @@ const GameScreen = ({ difficulty, playerBestScore }) => {
 		if (checkAnswers(answers, playerGuesses)) {
 			setGameOver(true);
 		} else {
-			const RESET_GUESSES = ['-', '-', '-', '-'];
 			updateUserAttempts(playerGuesses);
 
 			// All player attempts used - End of game
-			if (playerAttempts.length === 9) {
+			if (playerAttempts.length >= 9) {
 				setGameOver(true);
 				return;
 			}
-
-			setPlayerGuesses(RESET_GUESSES);
-			setPlayerGuessIndex(0);
-			setLockGameBoard(false);
+			setShowAttemptResults(true);
 		}
 	};
 
 	const updateUserAttempts = (currentAttemptValues) => {
 		const attemptData = handleAttemptData(answers, currentAttemptValues);
+		console.log({ attemptData, playerAttempts });
 		setPlayerAttempts((attempts) => [...attempts, attemptData]);
 	};
 
@@ -123,12 +172,22 @@ const GameScreen = ({ difficulty, playerBestScore }) => {
 	return (
 		<>
 			{/* <!-- Overlay --> */}
-			{playerResult && (
+			{playerResult && gameOver && (
 				<GameOverScreen
 					playerWin={playerResult === 'win'}
 					highScore={playerBestScore}
 					playerScore={playerAttempts.length}
 					playNewGame={handleNewGame}
+				/>
+			)}
+
+			{showAttemptResults && playerAttempts.length && !gameOver && (
+				<ResultsScreen
+					guesses={playerAttempts[playerAttempts.length - 1].values}
+					existing={playerAttempts[playerAttempts.length - 1].exist}
+					matches={playerAttempts[playerAttempts.length - 1].location}
+					handleClick={startNewAttempt}
+					handleReset={handleNewGame}
 				/>
 			)}
 			{/* <!-- /Overlay --> */}
@@ -144,7 +203,9 @@ const GameScreen = ({ difficulty, playerBestScore }) => {
 					<div className="attempts-container container">
 						<h3>
 							Attempts Left:{' '}
-							<span id="attempts-left">{10 - playerAttempts.length}</span>
+							<span id="attempts-left">{`${
+								10 - playerAttempts.length > 0 ? 10 - playerAttempts.length : 0
+							}`}</span>
 						</h3>
 					</div>
 				</section>
@@ -184,7 +245,7 @@ const GameScreen = ({ difficulty, playerBestScore }) => {
 					className={`container ${
 						answers.length ? 'animated fadeInUp' : 'hide'
 					}`}>
-					<Timer />
+					<Timer seconds={difficulty.timer} renderProgress={!lockGameBoard} />
 				</section>
 				{/* <!-- /Timer --> */}
 

@@ -15,7 +15,7 @@ export const fetchRandomNumbers = async (maxNumber) => {
 	} catch (error) {
 		//Fallback if error calling API
 		console.error(error);
-		alert('ERROR CALLING API!');
+		console.error('ERROR CALLING API!');
 		return randomNumbersFallback(maxNumber);
 	}
 };
@@ -52,11 +52,9 @@ export const handleAttemptData = (answers, values) => {
 
 	for (let i = 0; i < values.length; i++) {
 		if (Number(answers[i]) === Number(values[i])) {
-			console.log('located:', values[i]);
 			exist++;
 			location++;
 		} else if (values.includes(Number(answers[i]))) {
-			console.log('includes:', values[i]);
 			exist++;
 		}
 	}
