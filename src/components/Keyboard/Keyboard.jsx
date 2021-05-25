@@ -23,10 +23,10 @@ const Keyboard = ({ keyboardLength, lockGameBoard, handleClick }) => {
 
 	let styles;
 	switch (keyboardLength) {
-		case keyboardLength === 9: // Hard
+		case 9: // Hard
 			styles = 'repeat(5, 1fr)';
 			break;
-		case keyboardLength === 7: // Medium
+		case 7: // Medium
 			styles = 'repeat(4, 1fr)';
 			break;
 		default:
