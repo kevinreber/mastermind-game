@@ -1,16 +1,16 @@
 // Constants
 import { BASE_URL } from '../../config/constants';
+import axios from 'axios';
 
 export const fetchRandomNumbers = async (maxNumber) => {
 	const params = `?num=4&min=0&max=${maxNumber}&col=1&base=16&format=plain&rnd=new`;
 	const url = `${BASE_URL}/${params}`;
 	try {
-		const response = await fetch(url);
-		console.log(response);
+		const response = await axios.get(url);
+		console.log({ response });
 		if (response.status === 200) {
 			const data = response.data.replace(/\s+/g, ''); //Remove spaces and carriage returns
-			return [data];
-			// gameData.randomAPIResults = [...data]; //Store API results
+			return data.split('');
 		}
 	} catch (error) {
 		//Fallback if error calling API
