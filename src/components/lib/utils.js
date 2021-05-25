@@ -63,3 +63,20 @@ export const handleAttemptData = (answers, values) => {
 
 	return { values, exist, location };
 };
+
+export async function toggleAnswers() {
+	const cards = document.querySelectorAll(
+		'#random-numbers > .card.answer-card'
+	);
+	for (let [i, card] of cards.entries()) {
+		let flip = flipCard(card);
+		let timer = setTimeout(flip, i * 500);
+		await timer;
+	}
+}
+
+function flipCard(card) {
+	return function () {
+		card.classList.toggle('flip');
+	};
+}

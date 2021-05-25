@@ -30,7 +30,7 @@ const GameScreen = ({ difficulty, playerBestScore }) => {
 	const [playerAttempts, setPlayerAttempts] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [lockGameBoard, setLockGameBoard] = useState(true);
-	const [gameOver, setGameOver] = useState(true);
+	const [gameOver, setGameOver] = useState(false);
 
 	// async function startGame() {
 
@@ -44,7 +44,6 @@ const GameScreen = ({ difficulty, playerBestScore }) => {
 			const randomNumbers = await fetchRandomNumbers(difficulty.keyboardMax);
 			setAnswers(randomNumbers);
 			setLockGameBoard(false);
-			setGameOver(false);
 			setIsLoading(false);
 		};
 		if (isLoading) {
@@ -59,6 +58,17 @@ const GameScreen = ({ difficulty, playerBestScore }) => {
 		}
 	}, [playerGuessIndex]);
 
+	useEffect(() => {
+		if (gameOver) {
+			console.log('Game Over!');
+			if (playerAttempts.length === 10) {
+				console.log('you lose!');
+			} else {
+				console.log('you win!');
+			}
+		}
+	}, [gameOver, playerAttempts]);
+
 	const handleClick = (number) => {
 		const tempGuesses = playerGuesses;
 		tempGuesses[playerGuessIndex] = number;
@@ -67,30 +77,29 @@ const GameScreen = ({ difficulty, playerBestScore }) => {
 	};
 
 	const handleGuesses = () => {
-		console.log('user used all guesses!');
-		console.log(playerGuesses);
 		if (checkAnswers(answers, playerGuesses)) {
-			// TODO: Render win screen
-			console.log('success!');
 			setGameOver(true);
 		} else {
-			// TODO: Render attempts left screen
-			// TODO: Update player history
-			console.log('try again!');
+			const RESET_GUESSES = ['-', '-', '-', '-'];
 			updateUserAttempts(playerGuesses);
+
+			// All player attempts used - End of game
+			if (playerAttempts.length === 9) {
+				setGameOver(true);
+				return;
+			}
+
+			setPlayerGuesses(RESET_GUESSES);
+			setPlayerGuessIndex(0);
+			setLockGameBoard(false);
 		}
 	};
 
 	const updateUserAttempts = (currentAttemptValues) => {
-		// TODO: Check if numbers exist
-		// TODO: Check if location is correct
 		const attemptData = handleAttemptData(answers, currentAttemptValues);
-
-		console.log({ attemptData });
 		setPlayerAttempts((attempts) => [...attempts, attemptData]);
 	};
 
-	console.log({ answers });
 	if (isLoading) {
 		return <Loader />;
 	}
@@ -106,7 +115,8 @@ const GameScreen = ({ difficulty, playerBestScore }) => {
 				</p>
 				<div className="attempts-container container">
 					<h3>
-						Attempts Left: <span id="attempts-left">10</span>
+						Attempts Left:{' '}
+						<span id="attempts-left">{10 - playerAttempts.length}</span>
 					</h3>
 				</div>
 			</section>
@@ -118,7 +128,9 @@ const GameScreen = ({ difficulty, playerBestScore }) => {
 				className={`container ${
 					answers.length ? 'animated fadeInUp' : 'hide'
 				}`}>
-				{answers.length && <AnswerCards answers={answers} />}
+				{answers.length && (
+					<AnswerCards answers={answers} gameOver={gameOver} />
+				)}
 				{answers.length && (
 					<PlayerCards
 						playerGuesses={playerGuesses}
