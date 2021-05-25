@@ -454,3 +454,97 @@ p {
 a {
 	text-decoration: none;
 }
+
+/* ============================================= */
+/*              Overlay                          */
+/* ============================================= */
+
+#overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	// background-color: #fff;
+	z-index: 10;
+}
+
+.overlay-content {
+	position: relative;
+
+	&-container {
+		margin-left: auto;
+		margin-right: auto;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		text-align: center;
+		width: 90%;
+		margin-top: 1rem;
+	}
+}
+
+.start-screen {
+	font-size: 36px;
+	margin-bottom: 2rem;
+	letter-spacing: 1px;
+}
+
+.toggle-display {
+	opacity: 0;
+	display: none;
+}
+
+li {
+	margin-bottom: 8px;
+}
+
+// TEXT STYLES
+.txt {
+	&-results {
+		color: #fff;
+		-webkit-text-stroke: 2px $color-orange;
+	}
+
+	&-continue {
+		color: rgb(226, 226, 226);
+	}
+
+	&-results,
+	&-win {
+		font-size: 48px;
+	}
+
+	&-wrong,
+	&-win,
+	&-lose {
+		color: $color-golden;
+	}
+
+	&-player-input {
+		display: block;
+		margin: auto;
+		font-size: 36px;
+	}
+
+	&-correct,
+	&-player-input {
+		color: #fff;
+	}
+
+	&-correct {
+		text-align: start;
+		margin: 1rem auto;
+		font-size: 24px;
+
+		&-header {
+			color: $color-golden;
+		}
+
+		&-container {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+		}
+	}
+}

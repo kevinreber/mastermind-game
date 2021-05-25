@@ -14,6 +14,7 @@ import PlayerHistoryTable from '../PlayerHistoryTable';
 import Timer from '../Timer';
 import Keyboard from '../Keyboard/Keyboard';
 import Loader from '../Loader/Loader';
+import GameOverScreen from '../GameOverScreen/GameOverScreen';
 
 /** Game Screen renders when user begins game.
  *
@@ -30,9 +31,8 @@ const GameScreen = ({ difficulty, playerBestScore }) => {
 	const [playerAttempts, setPlayerAttempts] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [lockGameBoard, setLockGameBoard] = useState(true);
+	const [playerResult, setPlayerResult] = useState(null);
 	const [gameOver, setGameOver] = useState(false);
-
-	// async function startGame() {
 
 	// TODO
 	// checkIfBestScoreExists();
@@ -49,7 +49,7 @@ const GameScreen = ({ difficulty, playerBestScore }) => {
 		if (isLoading) {
 			getData();
 		}
-	}, []);
+	}, [isLoading]);
 
 	useEffect(() => {
 		if (playerGuessIndex === 4) {
@@ -58,13 +58,29 @@ const GameScreen = ({ difficulty, playerBestScore }) => {
 		}
 	}, [playerGuessIndex]);
 
+	const handleNewGame = () => {
+		const RESET_GUESSES = ['-', '-', '-', '-'];
+		setPlayerGuesses(RESET_GUESSES);
+		setPlayerGuessIndex(0);
+		setPlayerAttempts([]);
+		setGameOver(false);
+		setIsLoading(true);
+		setPlayerResult(null);
+	};
+
 	useEffect(() => {
 		if (gameOver) {
 			console.log('Game Over!');
 			if (playerAttempts.length === 10) {
 				console.log('you lose!');
+                setTimeout(()=> {
+				setPlayerResult('lose');
+                }, 3000)
 			} else {
 				console.log('you win!');
+                setTimeout(()=> {
+				setPlayerResult('win');
+                }, 3000)
 			}
 		}
 	}, [gameOver, playerAttempts]);
@@ -105,75 +121,88 @@ const GameScreen = ({ difficulty, playerBestScore }) => {
 	}
 
 	return (
-		<div id="game-container" className="game-container container">
-			{/* <!-- Header --> */}
-			<section
-				className={`header ${answers.length ? 'animated fadeInUp' : 'hide'}`}>
-				<h1 className="game-title">MASTERMIND</h1>
-				<p className="best-score">
-					BEST SCORE: <span id="best-score">{playerBestScore}</span>
-				</p>
-				<div className="attempts-container container">
-					<h3>
-						Attempts Left:{' '}
-						<span id="attempts-left">{10 - playerAttempts.length}</span>
-					</h3>
-				</div>
-			</section>
-			{/* <!-- /Header --> */}
-
-			{/* <!-- Gameboard --> */}
-			<section
-				id="gameboard"
-				className={`container ${
-					answers.length ? 'animated fadeInUp' : 'hide'
-				}`}>
-				{answers.length && (
-					<AnswerCards answers={answers} gameOver={gameOver} />
-				)}
-				{answers.length && (
-					<PlayerCards
-						playerGuesses={playerGuesses}
-						currentGuess={playerGuessIndex}
-					/>
-				)}
-			</section>
-			{/* <!-- /Gameboard --> */}
-
-			{/* <!-- Player History --> */}
-			<section
-				id="history"
-				className={`container ${
-					answers.length ? 'animated fadeInUp' : 'hide'
-				}`}>
-				{answers.length && <PlayerHistoryTable attempts={playerAttempts} />}
-			</section>
-			{/* <!-- /Player History --> */}
-
-			{/* <!-- Timer --> */}
-			<section
-				id="timer"
-				className={`container ${
-					answers.length ? 'animated fadeInUp' : 'hide'
-				}`}>
-				<Timer />
-			</section>
-			{/* <!-- /Timer --> */}
-
-			{/* <!-- Keyboard --> */}
-			<section
-				className={`keyboard-container ${
-					answers.length ? 'animated fadeInUp' : 'hide'
-				}`}>
-				<h3 className="keyboard-header">GUESS THE CODE ABOVE</h3>
-				<Keyboard
-					lockGameBoard={lockGameBoard}
-					keyboardLength={difficulty.keyboardMax}
-					handleClick={handleClick}
+		<>
+			{/* <!-- Overlay --> */}
+			{playerResult && (
+				<GameOverScreen
+					playerWin={playerResult === 'win'}
+					highScore={playerBestScore}
+					playerScore={playerAttempts.length}
+					playNewGame={handleNewGame}
 				/>
-			</section>
-			{/* <!-- Keyboard --> */}
-		</div>
+			)}
+			{/* <!-- /Overlay --> */}
+
+			<div id="game-container" className="game-container container">
+				{/* <!-- Header --> */}
+				<section
+					className={`header ${answers.length ? 'animated fadeInUp' : 'hide'}`}>
+					<h1 className="game-title">MASTERMIND</h1>
+					<p className="best-score">
+						BEST SCORE: <span id="best-score">{playerBestScore}</span>
+					</p>
+					<div className="attempts-container container">
+						<h3>
+							Attempts Left:{' '}
+							<span id="attempts-left">{10 - playerAttempts.length}</span>
+						</h3>
+					</div>
+				</section>
+				{/* <!-- /Header --> */}
+
+				{/* <!-- Gameboard --> */}
+				<section
+					id="gameboard"
+					className={`container ${
+						answers.length ? 'animated fadeInUp' : 'hide'
+					}`}>
+					{answers.length && (
+						<AnswerCards answers={answers} gameOver={gameOver} />
+					)}
+					{answers.length && (
+						<PlayerCards
+							playerGuesses={playerGuesses}
+							currentGuess={playerGuessIndex}
+						/>
+					)}
+				</section>
+				{/* <!-- /Gameboard --> */}
+
+				{/* <!-- Player History --> */}
+				<section
+					id="history"
+					className={`container ${
+						answers.length ? 'animated fadeInUp' : 'hide'
+					}`}>
+					{answers.length && <PlayerHistoryTable attempts={playerAttempts} />}
+				</section>
+				{/* <!-- /Player History --> */}
+
+				{/* <!-- Timer --> */}
+				<section
+					id="timer"
+					className={`container ${
+						answers.length ? 'animated fadeInUp' : 'hide'
+					}`}>
+					<Timer />
+				</section>
+				{/* <!-- /Timer --> */}
+
+				{/* <!-- Keyboard --> */}
+				<section
+					className={`keyboard-container ${
+						answers.length ? 'animated fadeInUp' : 'hide'
+					}`}>
+					<h3 className="keyboard-header">GUESS THE CODE ABOVE</h3>
+					<Keyboard
+						lockGameBoard={lockGameBoard}
+						keyboardLength={difficulty.keyboardMax}
+						handleClick={handleClick}
+					/>
+				</section>
+				{/* <!-- Keyboard --> */}
+			</div>
+		</>
 	);
 };
 
